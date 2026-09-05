@@ -1,0 +1,369 @@
+@import url(https://fonts.googleapis.com/css2?family=Poppins%3Awght%40100%3B200%3B300%3B400%3B500%3B600&display=swap%27%29%3B);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --bg-color: #000000;
+    --second-bg-color: #161616;
+    --text-color: #fff;
+    --main-color: #7b4bb7;
+    --grad-color: #aa507c;
+    --bg-bar: #475472;
+
+    --duration: 1s;
+    --nav-duration: calc(var(--duration) / 4);
+    --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --space: 1rem;
+    --font-size: 1.125rem;
+    --line-height: 1.5;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-color);
+    font-family: "Poppins", sans-serif;
+    color: var(--text-color);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    width: 0.8rem;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--main-color);
+}
+.no-scroll {
+  overflow-y: hidden;
+}
+
+section {
+    min-height: 100vh; /* cover entire page */
+    padding: 10rem 15%; /* match with header and all other sections */
+}
+
+
+.projects {
+    background-color: var(--bg-color);
+}
+.projects  h2 {
+    color: var(--text-color);
+}
+.ag-timeline-card_img-box img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.ag-timeline-card_img-box video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px; /* If your image had rounded corners */
+  object-fit: cover;  /* Keeps it nicely cropped if needed */
+}
+.ag-timeline-card_img-box .video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 ratio */
+  height: 0;
+  overflow: hidden;
+}
+.ag-timeline-card_img-box .video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.ag-timeline-card_desc p {
+     margin-bottom: 1em;
+}
+.ag-format-container {
+    /*width: 1160px;*/
+    width: 100%;
+    margin: 0 auto;
+
+    position: relative;
+}
+.ag-timeline-block {
+    /*padding: 300px 0;*/
+}
+.ag-timeline_item {
+    margin: 0 0 50px;
+
+    position: relative;
+}
+.ag-timeline_item:nth-child(2n) {
+    text-align: right;
+}
+.ag-timeline {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+
+    position: relative;
+}
+.ag-timeline_line {
+    width: 2px;
+    background-color: #393935;
+
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    bottom: 0;
+
+    overflow: hidden;
+
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+}
+.ag-timeline_line-progress {
+    width: 100%;
+    height: 20%;
+    background-color: var(--main-color);
+}
+.ag-timeline-card_box {
+    padding: 0 0 20px 50%;
+}
+.ag-timeline_item:nth-child(2n) .ag-timeline-card_box {
+    padding: 0 50% 20px 0;
+}
+.ag-timeline-card_point-box {
+    display: inline-block;
+    margin: 0 14px 0 -28px;
+}
+.ag-timeline_item:nth-child(2n) .ag-timeline-card_point-box {
+    margin: 0 -28px 0 14px;
+}
+.ag-timeline-card_point {
+    height: 60px;
+    line-height: 60px;
+    width: 60px;
+    border: 3px solid var(--main-color);
+    background-color: var(--bg-color);
+
+    text-align: center;
+    font-size: 20px;
+    color: var(--text-color);
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.js-ag-active .ag-timeline-card_point {
+    color: var(--bg-color);
+    background-color: var(--main-color);
+}
+.ag-timeline-card_meta-box {
+    display: inline-block;
+}
+.ag-timeline-card_meta {
+    margin: 10px 0 0;
+
+    font-weight: bold;
+    font-size: 28px;
+    color: var(--main-color);
+}
+.ag-timeline-card_meta a {
+    color: var(--main-color);
+}
+.ag-timeline-card_meta a:hover {
+    color: var(--grad-color);
+}
+.ag-timeline-card_item {
+    display: inline-block;
+    width: 45%;
+    margin: -77px 0 0;
+    background-color: var(--second-bg-color);
+
+    opacity: 0;
+
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+
+    -webkit-box-shadow: 0 0 0 0 rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 0 0 rgba(0,0,0,.5);
+    -o-box-shadow: 0 0 0 0 rgba(0,0,0,.5);
+    box-shadow: 0 0 0 0 rgba(0,0,0,.5);
+
+    -webkit-transition: -webkit-transform .5s, opacity .5s;
+    -moz-transition: -moz-transform .5s, opacity .5s;
+    -o-transition: -o-transform .5s, opacity .5s;
+    transition: transform .5s, opacity .5s;
+
+    position: relative;
+}
+.ag-timeline_item:nth-child(2n+1) .ag-timeline-card_item {
+    -webkit-transform: translateX(-200%);
+    -moz-transform: translateX(-200%);
+    -ms-transform: translateX(-200%);
+    -o-transform: translateX(-200%);
+    transform: translateX(-200%);
+}
+.ag-timeline_item:nth-child(2n) .ag-timeline-card_item {
+    -webkit-transform: translateX(200%);
+    -moz-transform: translateX(200%);
+    -ms-transform: translateX(200%);
+    -o-transform: translateX(200%);
+    transform: translateX(200%);
+}
+.js-ag-active.ag-timeline_item:nth-child(2n+1) .ag-timeline-card_item,
+.js-ag-active.ag-timeline_item:nth-child(2n) .ag-timeline-card_item {
+    opacity: 1;
+
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+}
+.ag-timeline-card_arrow {
+    height: 18px;
+    width: 18px;
+    margin-top: 20px;
+    background-color: #333333;;
+
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.ag-timeline_item:nth-child(2n+1) .ag-timeline-card_arrow {
+    margin-left: calc(-18px / 2);
+    margin-right: calc(-18px / 2);
+}
+.ag-timeline_item:nth-child(2n) .ag-timeline-card_arrow {
+    margin-left: -10px;
+
+    right: auto;
+    left: 0;
+}
+.ag-timeline-card_img {
+    width: 100%;
+}
+.ag-timeline-card_info {
+    padding: 20px 30px;
+}
+.ag-timeline-card_title {
+    display: none;
+    margin: 10px 0 0;
+
+    font-weight: bold;
+    font-size: 28px;
+    color: var(--main-color);
+}
+.ag-timeline-card_title a {
+    color:var(--main-color);
+}
+.ag-timeline-card_title a:hover {
+    color:var(--grad-color);
+}
+.ag-timeline-card_desc {
+    line-height: 1.45;
+
+    font-size: 16px;
+    color: var(--text-color);
+}
+.ag-timeline_item:nth-child(2n-1) .ag-timeline-card_desc {
+    text-align: right;
+}
+.ag-timeline_item:nth-child(2n) .ag-timeline-card_desc {
+    text-align: left;
+}
+
+
+/* media queries always last (overwriting) */
+@media (max-width: 979px) {
+    .ag-timeline_line {
+        left: 30px;
+    }
+
+    .ag-timeline_item:nth-child(2n) {
+        text-align: left;
+    }
+
+    .ag-timeline-card_box,
+    .ag-timeline_item:nth-child(2n) .ag-timeline-card_box {
+        padding: 0 0 20px;
+    }
+    .ag-timeline-card_meta-box {
+        display: none;
+    }
+    .ag-timeline-card_point-box,
+    .ag-timeline_item:nth-child(2n) .ag-timeline-card_point-box {
+        margin: 0 0 0 8px;
+    }
+    .ag-timeline-card_point {
+        height: 45px;
+        line-height: 45px;
+        width: 45px;
+
+        font-size: 15px;
+    }
+    .ag-timeline-card_item {
+        width: auto;
+        margin: -65px 0 0 75px
+    }
+    .ag-timeline_item:nth-child(2n+1) .ag-timeline-card_item,
+    .ag-timeline_item:nth-child(2n) .ag-timeline-card_item {
+        -webkit-transform: translateX(200%);
+        -moz-transform: translateX(200%);
+        -ms-transform: translateX(200%);
+        -o-transform: translateX(200%);
+        transform: translateX(200%);
+    }
+    .ag-timeline_item:nth-child(2n+1) .ag-timeline-card_arrow {
+        right: auto;
+        left: 0;
+    }
+    .ag-timeline-card_title {
+        display: block;
+    }
+    .ag-timeline_item:nth-child(2n-1) .ag-timeline-card_desc {
+        text-align: left;
+    }
+    .ag-timeline-card_arrow {
+        margin-top: 12px;
+    }
+}
+
+/* smartphone/tablet */
+
+
+@media (max-width: 639px) {
+    .ag-timeline_title {
+        font-size: 60px;
+    }
+
+    .ag-timeline-card_info {
+        padding: 10px 15px;
+    }
+    .ag-timeline-card_desc {
+        font-size: 14px;
+    }
+}
