@@ -1,119 +1,351 @@
 
+// ============================================================
+// GLOBAL SCROLL HANDLER
+// ============================================================
 
-
-// global scroll handler
 let lastScrollY = window.scrollY;
 let ticking = false;
 
 function onScroll() {
-  lastScrollY = window.scrollY;
+
   if (!ticking) {
     window.requestAnimationFrame(updateOnScroll);
     ticking = true;
   }
+
 }
 
 function updateOnScroll() {
-  // parallax effect
-  //updateParallax(lastScrollY);
 
-  // active section highlight
-  //updateSectionHighlight();
+  // Determine scroll direction
+  smoothScrollingTimeline();
 
-  // timeline progress animation
-  smoothScrollingTimeline(lastScrollY);
+  // Update timeline
   fnOnScroll();
 
-  // image animation
-  //scrollImage();
+  // Update cards
+  updateActiveCard();
 
-  ticking = false; // allow next scroll update
+  ticking = false;
 }
 
-window.addEventListener('scroll', onScroll);
-window.addEventListener('resize', fnOnResize);
+
+// Scroll
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// Resize
+window.addEventListener('resize', () => {
+
+  fnOnResize();
+  updateActiveCard();
+
+});
 
 
-// timeline animation
+// ============================================================
+// TIMELINE
+// ============================================================
+
 var agTimeline = $('.js-timeline'),
     agTimelineLine = $('.js-timeline_line'),
     agTimelineLineProgress = $('.js-timeline_line-progress'),
     agTimelinePoint = $('.js-timeline-card_point-box'),
     agTimelineItem = $('.js-timeline_item'),
-    
+
     agOuterHeight = $(window).outerHeight(),
     agHeight = $(window).height(),
+
+    agPosY = $(window).scrollTop(),
+
     f = -1,
     agFlag = false;
 
+
+// ============================================================
+// SCROLL
+// ============================================================
+
 function fnOnScroll() {
+
   agPosY = $(window).scrollTop();
 
   fnUpdateFrame();
+
 }
+
+
+// ============================================================
+// RESIZE
+// ============================================================
 
 function fnOnResize() {
+
   agPosY = $(window).scrollTop();
+
+  // Current viewport height
   agHeight = $(window).height();
+  agOuterHeight = $(window).outerHeight();
 
   fnUpdateFrame();
+
 }
+
+
+// ============================================================
+// TIMELINE FRAME
+// ============================================================
 
 function fnUpdateWindow() {
-  agFlag = false;
-  agTimelineLine.css({
-    top: agTimelineItem.first().find(agTimelinePoint).offset().top - agTimelineItem.first().offset().top,
-    bottom: agTimeline.offset().top + agTimeline.outerHeight() - agTimelineItem.last().find(agTimelinePoint).offset().top
-  });
 
-  f !== agPosY && (f = agPosY, agHeight, fnUpdateProgress());
+  agFlag = false;
+
+  // update timeline-line
+  if (
+    agTimelineItem.length &&
+    agTimelinePoint.length &&
+    agTimeline.length
+  ) {
+
+    agTimelineLine.css({
+
+      top:
+        agTimelineItem
+          .first()
+          .find(agTimelinePoint)
+          .offset().top
+        -
+        agTimelineItem
+          .first()
+          .offset().top,
+
+      bottom:
+        agTimeline.offset().top
+        +
+        agTimeline.outerHeight()
+        -
+        agTimelineItem
+          .last()
+          .find(agTimelinePoint)
+          .offset().top
+
+    });
+
+  }
+
+
+  // Update timeline
+  if (f !== agPosY) {
+
+    f = agPosY;
+
+    fnUpdateProgress();
+
+  }
+
 }
+
+
+// ============================================================
+// TIMELINE PROGRESS
+// ============================================================
 
 function fnUpdateProgress() {
-  var agTop = agTimelineItem.last().find(agTimelinePoint).offset().top;
-      i = agTop + agPosY - $(window).scrollTop();
-      a = agTimelineLineProgress.offset().top + agPosY - $(window).scrollTop();
-      n = agPosY - a + agOuterHeight / 2;
-      i <= agPosY + agOuterHeight / 2 && (n = i - a);
 
-  agTimelineLineProgress.css({height: n + 'px'});
+  if (
+    !agTimelineItem.length ||
+    !agTimelineLineProgress.length
+  ) {
+    return;
+  }
 
-  agTimelineItem.each(function () {
-  var agTop = $(this).find(agTimelinePoint).offset().top;
-  
-  (agTop + agPosY - $(window).scrollTop()) < agPosY + .5 * agOuterHeight ? $(this).addClass('js-ag-active') : $(this).removeClass('js-ag-active');
-  })
+
+  var agTop =
+    agTimelineItem
+      .last()
+      .find(agTimelinePoint)
+      .offset().top;
+
+
+  var i = agTop + agPosY - $(window).scrollTop();
+  var a = agTimelineLineProgress.offset().top + agPosY - $(window).scrollTop();
+  var n = agPosY - a + agOuterHeight / 2;
+
+
+  if (i <= agPosY + agOuterHeight / 2) {
+    n = i - a;
+  }
+
+
+  agTimelineLineProgress.css({
+    height: n + 'px'
+  });
+
 }
+
+
+// ============================================================
+// FRAME REQUEST
+// ============================================================
 
 function fnUpdateFrame() {
-  agFlag || requestAnimationFrame(fnUpdateWindow);
-  agFlag = true;
+
+  if (!agFlag) {
+    requestAnimationFrame(fnUpdateWindow);
+    agFlag = true;
+
+  }
+
 }
 
-function smoothScrollingTimeline(lastScrollY) {
-  const scrollingDown = window.scrollY > lastScrollY;
-  lastScrollY = window.scrollY;
-   document.documentElement.dataset.scrollDirection = scrollingDown ? 'down' : 'up';
+
+// ============================================================
+// SCROLL DIRECTION
+// ============================================================
+
+function smoothScrollingTimeline() {
+
+  const currentScrollY = window.scrollY;
+
+  const scrollingDown =
+    currentScrollY > lastScrollY;
+
+
+  document.documentElement.dataset.scrollDirection =
+    scrollingDown
+      ? 'down'
+      : 'up';
+
+
+  lastScrollY = currentScrollY;
+
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const items = document.querySelectorAll('.js-timeline_item');
 
-  const observerOptions = {
-    threshold: 0.3,
-    rootMargin: '0px 0px -10% 0px'
-  };
+// ============================================================
+// ACTIVE CARD
+// ============================================================
 
-  const observerScrolling = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const scrollingDown = document.documentElement.dataset.scrollDirection === 'down';
-      if (entry.isIntersecting && scrollingDown) {
-        entry.target.classList.add('js-ag-active');
-      } else if (!entry.isIntersecting && !scrollingDown) {
-        entry.target.classList.remove('js-ag-active');
+function updateActiveCard() {
+
+  const items =
+    document.querySelectorAll('.js-timeline_item');
+
+
+  const viewportHeight =
+    window.innerHeight;
+
+
+  const viewportCenter =
+    viewportHeight / 2;
+
+
+  // Scroll direction
+  const direction =
+    document.documentElement.dataset.scrollDirection;
+
+
+  // ==========================================================
+  // DOWN
+  // ==========================================================
+
+  if (direction === 'down') {
+
+    items.forEach(item => {
+
+      // Already active
+      if (item.classList.contains('js-ag-active')) {
+        return;
       }
-    });
-  }, observerOptions);
 
-  items.forEach(item => observerScrolling.observe(item));
-});
+
+      const card =
+        item.querySelector('.ag-timeline-card_item');
+
+
+      if (!card) {
+        return;
+      }
+
+
+      const rect =
+        card.getBoundingClientRect();
+
+
+      // Card reached center of viewport
+      if (rect.top <= viewportCenter) {
+
+        item.classList.add('js-ag-active');
+
+      }
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // UP
+  // ==========================================================
+
+  if (direction === 'up') {
+
+    const hideOffset = 150;
+
+    // Remove last actived card first
+    for (let i = items.length - 1; i >= 0; i--) {
+
+      const item = items[i];
+
+
+      if (!item.classList.contains('js-ag-active')) {
+        continue;
+      }
+
+
+      const card =
+        item.querySelector('.ag-timeline-card_item');
+
+
+      if (!card) {
+        continue;
+      }
+
+
+      const rect =
+        card.getBoundingClientRect();
+
+
+      // Card is only removed with offset
+      if (rect.top + hideOffset > viewportCenter) {
+
+        item.classList.remove('js-ag-active');
+
+        // Only remove on card at a time
+        break;
+
+      }
+
+    }
+
+  }
+
+}
+
+
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    // Init timeline
+    fnOnResize();
+
+    // Init cards
+    updateActiveCard();
+
+  }
+);
+
